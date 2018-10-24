@@ -1,0 +1,7 @@
+package player;
+
+component PlayerEntity
+{
+id = 100;
+bool is_active = 1;
+}

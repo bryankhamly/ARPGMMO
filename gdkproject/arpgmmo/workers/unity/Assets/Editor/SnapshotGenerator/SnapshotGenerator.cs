@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.PlayerLifecycle;
 using UnityEngine;
+using Improbable;
+using Improbable.Worker.Core;
 using Snapshot = Improbable.Gdk.Core.Snapshot;
+using Improbable.Worker;
 
 namespace BlankProject.Editor
 {
-    internal static class SnapshotGenerator
+       internal static class SnapshotGenerator
     {
         public struct Arguments
         {

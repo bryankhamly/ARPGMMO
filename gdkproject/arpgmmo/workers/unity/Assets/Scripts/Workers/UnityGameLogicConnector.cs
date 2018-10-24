@@ -23,17 +23,18 @@ namespace BlankProject
             PlayerLifecycleHelper.AddServerSystems(Worker.World);
         }
 
-        private static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position)
+        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position)
         {
             var clientAttribute = $"workerId:{workerId}";
             var serverAttribute = WorkerType;
 
             var entityBuilder = EntityBuilder.Begin()
-                .AddPosition(0, 0, 0, serverAttribute)
+                .AddPosition(UnityEngine.Random.Range(-8,8), 0, 0, serverAttribute)
                 .AddMetadata("Player", serverAttribute)
                 .SetPersistence(false)
                 .SetReadAcl(AllWorkerAttributes)
                 .SetEntityAclComponentWriteAccess(serverAttribute)
+                .AddComponent(Player.PlayerEntity.Component.CreateSchemaComponentData(true), serverAttribute)
                 .AddPlayerLifecycleComponents(workerId, clientAttribute, serverAttribute)
                 .AddTransformSynchronizationComponents(clientAttribute);
 
