@@ -2,6 +2,8 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
+using Improbable.Gdk.GameObjectRepresentation;
+using Improbable.Gdk.GameObjectCreation;
 
 namespace BlankProject
 {
@@ -14,31 +16,14 @@ namespace BlankProject
         
         private async void Start()
         {
-            PlayerLifecycleConfig.CreatePlayerEntityTemplate = CreatePlayerEntityTemplate;
+            //PlayerLifecycleConfig.CreatePlayerEntityTemplate = CreatePlayerEntityTemplate;
             await Connect(WorkerType, new ForwardingDispatcher()).ConfigureAwait(false);
         }
 
         protected override void HandleWorkerConnectionEstablished()
         {
             PlayerLifecycleHelper.AddServerSystems(Worker.World);
-        }
-
-        public static EntityTemplate CreatePlayerEntityTemplate(string workerId, Improbable.Vector3f position)
-        {
-            var clientAttribute = $"workerId:{workerId}";
-            var serverAttribute = WorkerType;
-
-            var entityBuilder = EntityBuilder.Begin()
-                .AddPosition(UnityEngine.Random.Range(-8,8), 0, 0, serverAttribute)
-                .AddMetadata("Player", serverAttribute)
-                .SetPersistence(false)
-                .SetReadAcl(AllWorkerAttributes)
-                .SetEntityAclComponentWriteAccess(serverAttribute)
-                .AddComponent(Player.PlayerEntity.Component.CreateSchemaComponentData(true), serverAttribute)
-                .AddPlayerLifecycleComponents(workerId, clientAttribute, serverAttribute)
-                .AddTransformSynchronizationComponents(clientAttribute);
-
-            return entityBuilder.Build();
-        }
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World);
+        }    
     }
 }
